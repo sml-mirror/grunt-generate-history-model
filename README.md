@@ -1,13 +1,5 @@
-# TypeScript File Parser
+# Grunt plugin for code generation history models by models description
 
-This repository provides a parser for `*.ts` files. It parses the structure of a file and provides JSON object that contains its declaration.
+[![Build Status](https://travis-ci.org/AbatapCompany/grunt-generate-history-model.svg?branch=master)](https://travis-ci.org/AbatapCompany/grunt-generate-history-model)
 
-## Usage
-
-```js
-import tsFileStruct = require("ts-file-parser")
-
-var filePath = "./src/typescript-file.ts";
-var decls = fs.readFileSync(filePath).toString();
-var jsonStructure = tsFileStruct.parseStruct(decls,{},filePath);
-```
+This repository provides a grunt plugin for code generation history models by models description.

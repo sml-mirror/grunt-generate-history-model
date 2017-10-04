@@ -2,6 +2,7 @@
 
 # compiled output
 
+/tasks
 /dist
 /test/dist
 /tmp

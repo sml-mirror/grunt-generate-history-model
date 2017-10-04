@@ -1,1 +1,0 @@
-{"version":3,"file":"generateHistoryModel.js","sourceRoot":"","sources":["../src/tasks/generateHistoryModel.ts"],"names":[],"mappings":"AAAA,YAAY,CAAC;;AACb,+DAAwF;AAExF,qBAAqB,KAAU;IAC7B,KAAK,CAAC,iBAAiB,CAAC,sBAAsB,EAAE;QAC1C,IAAI,OAAO,GAAG,0CAAoB,CAAC,IAAI,CAAC,CAAC;QACzC,iDAA2B,CAAC,OAAO,CAAC,CAAC;IACzC,CAAC,CACJ,CAAC;AACF,CAAC;AACD,MAAM,CAAC,OAAO,GAAG,WAAW,CAAC"}
