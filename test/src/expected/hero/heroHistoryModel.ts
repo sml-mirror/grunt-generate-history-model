@@ -14,8 +14,6 @@ export class hHero {
     @Column()
     public name: string;
     @Column()
-    public data: string;
-    @Column()
     @Index()
     public detailId: number;
     @Column("int", { "isArray": true })

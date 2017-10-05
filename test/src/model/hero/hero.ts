@@ -8,7 +8,6 @@ export class Hero {
     public id?: number;
     @Column()
     public name: string;
-    @Column()
     public data: string;
     @HistoryIndex()
     @Column()
