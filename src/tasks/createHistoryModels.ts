@@ -1,7 +1,9 @@
+
 import {Options, FileMapping} from "./model/options";
 import {ClassMetadata} from "./model/classmetadata";
 import {FieldMetadata} from "./model/fieldmetadata";
 import {FileMetadata} from "./model/filemetadata";
+import {IMyFilesConfig} from "./model/ExtensionFileConfig";
 import {parseStruct} from "ts-file-parser";
 import {ArrayType, BasicType} from "ts-file-parser";
 import {render, renderString, configure} from "nunjucks";
@@ -27,8 +29,10 @@ export function createOptionsOfGrunt(obj: IGrunt): Options {
      }
     options.files = files;
     if ( obj.task.current.data.oneFile &&  obj.task.current.files.length) {
-             options.allInOneFile = `${obj.task.current.target}/common.ts`;
+        var fileConfig = obj.task.current.files[0] as IMyFilesConfig;
+        options.allInOneFile = `${fileConfig.orig.dest}/common.ts`;
      }
+
      return options;
  }
 
