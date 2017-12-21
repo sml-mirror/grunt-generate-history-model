@@ -103,6 +103,11 @@ function createMetadatas(properties: Options) {
                     if (dec.name === "HistoryIndex") {
                         fldMetadata.generateIndex = true;
                     }
+                    if (dec.name === "JoinColumn" && isIgnoredInHistory === false) {
+                        isDbColumn = true;
+                        fldMetadata.name = `${fldMetadata.name}id`;
+                    }
+
                 });
 
                 if (!isDbColumn || isIgnoredInHistory) {
