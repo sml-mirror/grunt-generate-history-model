@@ -106,6 +106,7 @@ function createMetadatas(properties: Options) {
                     if (dec.name === "JoinColumn" && isIgnoredInHistory === false) {
                         isDbColumn = true;
                         fldMetadata.name = `${fldMetadata.name}id`;
+                        fldMetadata.type = "number";
                     }
 
                 });
