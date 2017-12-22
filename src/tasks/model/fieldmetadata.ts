@@ -5,4 +5,5 @@ export class FieldMetadata {
     public generateIndex: boolean = false;
     public ignoredInHistory: boolean = false;
     public isArray: boolean = false;
+    public nullable: boolean = false;
 }
