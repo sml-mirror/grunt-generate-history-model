@@ -12,6 +12,6 @@ export class Hero {
     @HistoryIndex()
     @Column()
     public detailId?: number;
-    @Column("int", { "isArray": true })
+    @Column({"type": "integer", "array": true})
     public simpleArray: number[];
 }
