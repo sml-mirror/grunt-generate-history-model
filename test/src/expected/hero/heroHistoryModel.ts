@@ -9,13 +9,13 @@ export class hHero {
     @Column()
     public __operation: string;
 
-    @Column("date")
+    @Column('date')
     public __changedate: Date;
-    @Column()
+   @Column( 'string')
     public name: string;
-    @Column()
+   @Column( 'integer' )
     @Index()
     public detailId: number;
-    @Column("int", { "isArray": true })
+    @Column('int', { 'array': true })
     public simpleArray: number[];
 }

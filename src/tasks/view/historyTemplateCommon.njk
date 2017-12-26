@@ -11,18 +11,19 @@ export class h{{class.name}} {
     @Column()
     public __operation: string;
 
-    @Column("date")
+    @Column('date')
     public __changedate: Date;
 {% for field in class.fields %}
 {% if field.ignoredInHistory===false %}
 {% if field.isArray %}
 {% if field.type==="number[]"%}
-    @Column("int", { "isArray": true })
+    @Column('int', { 'array': true })
 {% elif field.type==="string[]"%}
 @Column("simple-array")
 {%endif%}
 {%else%}
-    @Column()
+   @Column({%if (field.typeInDecorator) %}'{{field.typeInDecorator}}'{%else%} {%if field.type==="number"%}'integer' {%else%}'string'{%endif%}{%endif%}
+{% if (field.type and field.nullable ===true) %}, {'nullable': true}{% endif %})
 {%endif%}
 {% if field.generateIndex %}
     @Index()

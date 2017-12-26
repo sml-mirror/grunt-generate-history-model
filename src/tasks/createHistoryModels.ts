@@ -43,7 +43,7 @@ function createMetadatas(properties: Options) {
     var wasFiled = 0;
     var fileMet;
     var files = properties.files;
-    for (var file of files){
+    for (var file of files) {
         if (properties.allInOneFile) {
             if (fileMet === undefined) {
             fileMet = new FileMetadata();
@@ -85,7 +85,7 @@ function createMetadatas(properties: Options) {
                         skobes += "[]";
                     }
                     fldMetadata.type += skobes;
-                }else {
+                } else {
                     fldMetadata.name = fld.name;
                     fldMetadata.type = (<BasicType>fld.type).typeName;
                 }
@@ -98,11 +98,35 @@ function createMetadatas(properties: Options) {
 
                     if (dec.name === "Column") {
                         isDbColumn = true;
+                        dec.arguments.forEach(arg => {
+                            if (arg) {
+                                if (typeof(arg) === "string" && dec.arguments[0] === arg) {
+                                    fldMetadata.typeInDecorator = arg;
+                                }
+                                if (arg["nullable"] && arg["nullable"] === true) {
+                                    fldMetadata.nullable = true;
+                                }
+                                if (arg["name"]) {
+                                    fldMetadata.name = arg["name"];
+                                }
+                            }
+                        });
                     }
-
                     if (dec.name === "HistoryIndex") {
                         fldMetadata.generateIndex = true;
                     }
+                    if (dec.name === "JoinColumn" && isIgnoredInHistory === false) {
+                        isDbColumn = true;
+                        fldMetadata.name = `${fldMetadata.name}id`;
+                        fldMetadata.type = "number";
+                        fldMetadata.nullable = true;
+                        dec.arguments.forEach(arg => {
+                            if (arg["name"]) {
+                                fldMetadata.name = arg["name"];
+                            }
+                        });
+                    }
+
                 });
 
                 if (!isDbColumn || isIgnoredInHistory) {
