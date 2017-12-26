@@ -8,17 +8,17 @@ export function createHistoryModels(options: Options): string [] {
 
 
 export function GenerateHistory(): Function {
-    return function(){
+    return function() {
         var f;
     };
 }
 export function IgnoredInHistory(): Function {
-    return function(){
+    return function() {
         var f;
 };
 }
 export function HistoryIndex(): Function {
-    return function(){
+    return function() {
         var f;
 };
 }

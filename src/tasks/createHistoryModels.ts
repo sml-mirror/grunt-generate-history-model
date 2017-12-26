@@ -43,7 +43,7 @@ function createMetadatas(properties: Options) {
     var wasFiled = 0;
     var fileMet;
     var files = properties.files;
-    for (var file of files){
+    for (var file of files) {
         if (properties.allInOneFile) {
             if (fileMet === undefined) {
             fileMet = new FileMetadata();
@@ -85,7 +85,7 @@ function createMetadatas(properties: Options) {
                         skobes += "[]";
                     }
                     fldMetadata.type += skobes;
-                }else {
+                } else {
                     fldMetadata.name = fld.name;
                     fldMetadata.type = (<BasicType>fld.type).typeName;
                 }
