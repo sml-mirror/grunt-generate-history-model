@@ -9,7 +9,7 @@ export class hHero {
     @Column()
     public __operation: string;
 
-    @Column('date')
+    @Column('timestamp with time zone')
     public __changedate: Date;
    @Column( 'string')
     public name: string;
