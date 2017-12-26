@@ -1,6 +1,6 @@
 {
   "name": "grunt-generate-history-model",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Grunt task for code generation history models by models description",
   "private": false,
   "main": "dist/src/index.js",
