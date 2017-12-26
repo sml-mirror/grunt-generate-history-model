@@ -99,14 +99,16 @@ function createMetadatas(properties: Options) {
                     if (dec.name === "Column") {
                         isDbColumn = true;
                         dec.arguments.forEach(arg => {
-                            if (typeof(arg) === "string" && dec.arguments[0] === arg) {
-                                fldMetadata.typeInDecorator = arg;
-                            }
-                            if (arg["nullable"] && arg["nullable"] === true) {
-                                fldMetadata.nullable = true;
-                            }
-                            if (arg["name"]) {
-                                fldMetadata.name = arg["name"];
+                            if (arg) {
+                                if (typeof(arg) === "string" && dec.arguments[0] === arg) {
+                                    fldMetadata.typeInDecorator = arg;
+                                }
+                                if (arg["nullable"] && arg["nullable"] === true) {
+                                    fldMetadata.nullable = true;
+                                }
+                                if (arg["name"]) {
+                                    fldMetadata.name = arg["name"];
+                                }
                             }
                         });
                     }
