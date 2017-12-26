@@ -99,6 +99,9 @@ function createMetadatas(properties: Options) {
                     if (dec.name === "Column") {
                         isDbColumn = true;
                         dec.arguments.forEach(arg => {
+                            if (typeof(arg) === "string" && dec.arguments[0] === arg) {
+                                fldMetadata.typeInDecorator = arg;
+                            }
                             if (arg["nullable"] && arg["nullable"] === true) {
                                 fldMetadata.nullable = true;
                             }
@@ -114,6 +117,12 @@ function createMetadatas(properties: Options) {
                         isDbColumn = true;
                         fldMetadata.name = `${fldMetadata.name}id`;
                         fldMetadata.type = "number";
+                        fldMetadata.nullable = true;
+                        dec.arguments.forEach(arg => {
+                            if (arg["name"]) {
+                                fldMetadata.name = arg["name"];
+                            }
+                        });
                     }
 
                 });

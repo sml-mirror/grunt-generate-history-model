@@ -22,7 +22,8 @@ export class h{{class.name}} {
 @Column("simple-array")
 {%endif%}
 {%else%}
-    @Column({% if field.type === "string"%}'text'{% endif %}{% if field.type === "number"%}'integer'{% endif %})
+   @Column({%if (field.typeInDecorator) %}'{{field.typeInDecorator}}'{%else%} {%if field.type==="number"%}'integer' {%else%}'string'{%endif%}{%endif%}
+{% if (field.type and field.nullable ===true) %}, {'nullable': true}{% endif %})
 {%endif%}
 {% if field.generateIndex %}
     @Index()
