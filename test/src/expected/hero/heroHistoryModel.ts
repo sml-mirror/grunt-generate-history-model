@@ -11,6 +11,8 @@ export class hHero {
 
     @Column('timestamp with time zone')
     public __changedate: Date;
+   @Column( 'integer' )
+    public id: number;
    @Column( 'string')
     public name: string;
    @Column( 'integer' )

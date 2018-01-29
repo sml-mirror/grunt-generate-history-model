@@ -96,7 +96,7 @@ function createMetadatas(properties: Options) {
                         isIgnoredInHistory = true;
                     }
 
-                    if (dec.name === "Column") {
+                    if (dec.name === "Column" || dec.name === "PrimaryGeneratedColumn"  || dec.name === "PrimaryColumn") {
                         isDbColumn = true;
                         dec.arguments.forEach(arg => {
                             if (arg) {

@@ -1,10 +1,9 @@
 import {GenerateHistory, IgnoredInHistory, HistoryIndex} from "../../../../src/index";
-import {Column} from "typeorm";
+import {Column, PrimaryGeneratedColumn} from "typeorm";
 
 @GenerateHistory()
 export class Hero {
-    @IgnoredInHistory()
-    @Column()
+    @PrimaryGeneratedColumn()
     public id?: number;
     @Column()
     public name: string;
