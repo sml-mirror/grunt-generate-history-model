@@ -18,7 +18,7 @@ export class h{{class.name}} {
 {% if field.ignoredInHistory===false %}
 {% if field.isArray %}
 {% if field.type==="number[]"%}
-    @Column('int', { 'array': true })
+    @Column('int', { 'array': true {% if (field.type and field.nullable ===true) %}, 'nullable': true{% endif %} })
 {% elif field.type==="string[]"%}
 @Column("simple-array")
 {%endif%}

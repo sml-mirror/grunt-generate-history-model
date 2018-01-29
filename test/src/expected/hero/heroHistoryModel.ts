@@ -19,6 +19,6 @@ export class hHero {
    @Column( 'integer' )
     @Index()
     public detailId: number;
-    @Column('int', { 'array': true })
+    @Column('int', { 'array': true , 'nullable': true })
     public simpleArray: number[];
 }
