@@ -10,6 +10,7 @@ export class hHero {
     public __operation: string;
 
     @Column('timestamp with time zone')
+    @Index('ind_hemployee_changed_date')
     public __changedate: Date;
    @Column( 'integer' )
     public id: number;

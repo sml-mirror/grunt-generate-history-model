@@ -12,6 +12,7 @@ export class h{{class.name}} {
     public __operation: string;
 
     @Column('timestamp with time zone')
+    @Index('ind_hemployee_changed_date')
     public __changedate: Date;
 {% for field in class.fields %}
 {% if field.ignoredInHistory===false %}
