@@ -1,6 +1,6 @@
 import {Entity, Column, PrimaryColumn, ColumnOptions, Index, PrimaryGeneratedColumn} from "typeorm";
-import "reflect-metadata";
-  
+import 'reflect-metadata';
+
 @Entity()
 export class hHero {
     @PrimaryGeneratedColumn()
