@@ -1,7 +1,7 @@
-import {Entity, Column, PrimaryColumn, ColumnOptions, Index, PrimaryGeneratedColumn} from "typeorm";
+import {Entity, Column, PrimaryColumn, ColumnOptions, Index, PrimaryGeneratedColumn} from 'typeorm';
 import 'reflect-metadata';
 
-@Entity()
+@Entity('h_hero')
 export class hHero {
     @PrimaryGeneratedColumn()
     public __id?: number;
