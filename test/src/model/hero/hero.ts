@@ -5,12 +5,15 @@ import {Column, PrimaryGeneratedColumn} from "typeorm";
 export class Hero {
     @PrimaryGeneratedColumn()
     public id?: number;
-    @Column()
+    @Column("text")
     public name: string;
+    @HistoryIndex("index_data_test")
+    @Column("text")
     public data: string;
     @HistoryIndex()
     @Column()
     public detailId?: number;
     @Column({"type": "integer", "array": true, "nullable": true})
     public simpleArray: number[];
+    public columnWithoutDatabase: string;
 }

@@ -101,7 +101,7 @@ function createMetadatas(properties: Options) {
                         dec.arguments.forEach(arg => {
                             if (arg) {
                                 if (typeof(arg) === "string" && dec.arguments[0] === arg) {
-                                    fldMetadata.typeInDecorator = arg;
+                                    fldMetadata.typeInDecorator = dec.arguments[0].toString();
                                 }
                                 if (arg["nullable"] && arg["nullable"] === true) {
                                     fldMetadata.nullable = true;
@@ -114,6 +114,9 @@ function createMetadatas(properties: Options) {
                     }
                     if (dec.name === "HistoryIndex") {
                         fldMetadata.generateIndex = true;
+                        if (dec.arguments[0]) {
+                            fldMetadata.indexName = dec.arguments[0].toString();
+                        }
                     }
                     if (dec.name === "JoinColumn" && isIgnoredInHistory === false) {
                         isDbColumn = true;
@@ -128,11 +131,12 @@ function createMetadatas(properties: Options) {
                     }
 
                 });
-
+                if (fldMetadata.generateIndex && !fldMetadata.indexName) {
+                    fldMetadata.indexName = `ind_h${classMet.name}_${fldMetadata.name}`;
+                }
                 if (!isDbColumn || isIgnoredInHistory) {
                     fldMetadata.ignoredInHistory = true;
                 }
-
                 classMet.fields.push(fldMetadata);
             });
             if (fileMet.classes === null) {

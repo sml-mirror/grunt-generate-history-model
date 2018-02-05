@@ -17,7 +17,7 @@ export function IgnoredInHistory(): Function {
         var f;
 };
 }
-export function HistoryIndex(): Function {
+export function HistoryIndex(indexName?: string): Function {
     return function() {
         var f;
 };

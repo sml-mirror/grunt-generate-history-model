@@ -14,10 +14,13 @@ export class hHero {
     public __changedate: Date;
    @Column( 'integer' )
     public id: number;
-   @Column( 'string')
+   @Column('text')
     public name: string;
+   @Column('text')
+    @Index('index_data_test')
+    public data: string;
    @Column( 'integer' )
-    @Index()
+    @Index('ind_hHero_detailId')
     public detailId: number;
     @Column('int', { 'array': true , 'nullable': true })
     public simpleArray: number[];
