@@ -60,7 +60,7 @@ function createMetadatas(properties: Options) {
         var stringFile = fs.readFileSync(file.source, "utf-8");
         let correctStringFile  = ViewModelTypeCorrecting(stringFile);
         let tmpFileSource = file.source.split(".ts").join("tmp.ts");
-        fs.writeFileSync(tmpFileSource,correctStringFile,"utf-8");
+        fs.writeFileSync(tmpFileSource, correctStringFile , "utf-8");
         var jsonStructure = parseStruct(correctStringFile, {}, tmpFileSource);
         fs.unlinkSync(tmpFileSource);
         jsonStructure.classes.forEach(cls => {
@@ -177,17 +177,17 @@ function  createFiles(metadata: FileMetadata[]): string[] {
     }
     return res;
 }
-function ViewModelTypeCorrecting(input) {
+function ViewModelTypeCorrecting(input: string) {
     let firstViewModelTypeInArray = input.split("@ViewModelType");
     let result = firstViewModelTypeInArray.map( str => {
         let tmpStr =  str.trim();
         let viewModelTypeDecoratorRegExp = /\(\s?{\s*?["']type["']\s?:\s?\w+/;
         let matches = viewModelTypeDecoratorRegExp.exec(tmpStr);
-        if(matches) {
-            let need = matches[0]
+        if (matches) {
+            let need = matches[0];
             let matchRegExp = /[A-Z]\w+/;
             let innerMatches = matchRegExp.exec(need);
-            return str.replace(innerMatches[0],`"${innerMatches[0]}"`);   
+            return str.replace(innerMatches[0], `"${innerMatches[0]}"`);
         }
         return str;
     }).join("@ViewModelType");
