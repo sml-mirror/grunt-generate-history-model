@@ -187,9 +187,18 @@ function ViewModelTypeCorrecting(input: string) {
             let need = matches[0];
             let matchRegExp = /[A-Z]\w+/;
             let innerMatches = matchRegExp.exec(need);
-            return str.replace(innerMatches[0], `"${innerMatches[0]}"`);
+            tmpStr = tmpStr.replace(innerMatches[0], `"${innerMatches[0]}"`);
         }
-        return str;
+        let viewModelTypeDecoratorForTransformer = /["']function["']\s?:\s?\w+(\.)?(\w+)?/;
+        let secMatches = viewModelTypeDecoratorForTransformer.exec(tmpStr);
+        if (secMatches) {
+            let need = secMatches[0];
+            let matchRegExp = /:\s?\w+(\.)?(\w+)?/;
+            let innerMatches = matchRegExp.exec(need);
+            let variant = `: "${innerMatches[0].substring(1).trim()}"`;
+            tmpStr =  tmpStr.replace(innerMatches[0], variant);
+        }
+        return tmpStr;
     }).join("@ViewModelType");
     return result;
 }
