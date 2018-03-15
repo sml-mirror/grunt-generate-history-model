@@ -4,7 +4,7 @@ import {createHistoryModelsInternal, createOptionsOfGrunt} from "./createHistory
 function makeHistory(grunt: IGrunt) {
   grunt.registerMultiTask("generateHistoryModel", function() {
         var options = createOptionsOfGrunt(grunt);
-        createHistoryModelsInternal(options);
+        createHistoryModelsInternal();
     }
 );
 }

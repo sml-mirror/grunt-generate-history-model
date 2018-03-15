@@ -8,9 +8,15 @@ import {parseStruct} from "ts-file-parser";
 import {ArrayType, BasicType} from "ts-file-parser";
 import {render, renderString, configure} from "nunjucks";
 import * as path from "path";
+import * as fs from "fs";
+import { Config } from "./model/config";
+import { GenerateHistoryOptions } from "./model/GenerateHistoryOptions";
 
-export function createHistoryModelsInternal(prop: Options): string [] {
-    var  metadata = createMetadatas(prop);
+export function createHistoryModelsInternal(): string [] {
+    let possibleFiles: string[] = [];
+    let config = <Config>JSON.parse(fs.readFileSync("genconfig.json", "utf8"));
+    getAllfiles(".", possibleFiles, config.check.folders);
+    var  metadata = createMetadatas(possibleFiles);
     var resultTemplate = createFiles(metadata);
     return resultTemplate;
  }
@@ -30,36 +36,27 @@ export function createOptionsOfGrunt(obj: IGrunt): Options {
     options.files = files;
     if ( obj.task.current.data.oneFile &&  obj.task.current.files.length) {
         var fileConfig = obj.task.current.files[0] as IExtensionGruntFilesConfig;
-        options.allInOneFile = `${fileConfig.orig.dest}/common.ts`;
      }
 
      return options;
  }
 
-function createMetadatas(properties: Options) {
+function createMetadatas(files: string[]) {
     var fs = require("fs");
     let generationFiles: FileMetadata[];
     generationFiles = new Array<FileMetadata>();
     var wasFiled = 0;
-    var fileMet;
-    var files = properties.files;
+    let fileMet;
     for (var file of files) {
-        if (properties.allInOneFile) {
-            if (fileMet === undefined) {
-            fileMet = new FileMetadata();
-            }
-            fileMet.filename = properties.allInOneFile;
-            if (fileMet.classes === undefined) {
-            fileMet.classes = new Array<ClassMetadata>();
-            }
-        } else  {
-            fileMet = new FileMetadata();
-            fileMet.filename = file.destination;
-            fileMet.classes = new Array<ClassMetadata>();
+        if (/\w+tmp.ts$/.exec(file)) {
+            break;
         }
-        var stringFile = fs.readFileSync(file.source, "utf-8");
+        fileMet = new FileMetadata();
+        fileMet.classes = new Array<ClassMetadata>();
+
+        var stringFile = fs.readFileSync(file, "utf-8");
         let correctStringFile  = ViewModelTypeCorrecting(stringFile);
-        let tmpFileSource = file.source.split(".ts").join("tmp.ts");
+        let tmpFileSource = file.split(".ts").join("tmp.ts");
         fs.writeFileSync(tmpFileSource, correctStringFile , "utf-8");
         var jsonStructure = parseStruct(correctStringFile, {}, tmpFileSource);
         fs.unlinkSync(tmpFileSource);
@@ -69,6 +66,8 @@ function createMetadatas(properties: Options) {
             classMet.fields = new Array<FieldMetadata>();
             cls.decorators.forEach(dec => {
                 if (dec.name === "GenerateHistory") {
+                    let  options = <GenerateHistoryOptions>dec.arguments[0].valueOf();
+                    fileMet.filename = options.historyPath + "/" + cls.name[0].toLowerCase() + cls.name.substring(1) + ".ts";
                     classMet.generateHistory = true;
                 }
             });
@@ -148,13 +147,7 @@ function createMetadatas(properties: Options) {
               }
             fileMet.classes.push(classMet);
         });
-        if (properties.allInOneFile && wasFiled === 0) {
-            generationFiles.push(fileMet);
-            wasFiled++;
-        }
-        if (!properties.allInOneFile) {
-            generationFiles.push(fileMet);
-        }
+        generationFiles.push(fileMet);
     }
     return generationFiles;
 }
@@ -202,3 +195,22 @@ function ViewModelTypeCorrecting(input: string) {
     }).join("@ViewModelType");
     return result;
 }
+
+function getAllfiles(path: string, resultPathes: string[], checkingFolders: string[]) {
+    fs.readdirSync(path).forEach(f => {
+        let pth =  path + `/${f}`;
+        checkingFolders.forEach(_folder => {
+            if (fs.statSync(pth).isDirectory()) {
+                if ( (_folder.length >= pth.length && _folder.includes(pth)) || (pth.length >= _folder.length && pth.includes(_folder)) ) {
+                    getAllfiles(pth , resultPathes, checkingFolders);
+                }
+            } else {
+                let tsRegExp = /.+\.ts$/;
+                let matches = tsRegExp.exec(pth);
+                if ( matches && matches.length > 0) {
+                    resultPathes.push( matches[0]);
+                }
+            }
+        });
+    });
+  }

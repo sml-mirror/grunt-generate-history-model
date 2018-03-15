@@ -20,11 +20,10 @@ describe("E2E Tests", () => {
               source: sourceFileName,
               destination: generatedFileName
             }
-          ],
-          allInOneFile: null,
+          ]
         };
 
-        createHistoryModels(options);
+        createHistoryModels();
         let expected = fs.readFileSync(expectedFileName, "utf-8");
         let result = fs.readFileSync(generatedFileName, "utf-8");
 

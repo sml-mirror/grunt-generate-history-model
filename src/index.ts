@@ -1,13 +1,14 @@
 import {createHistoryModelsInternal} from "./tasks/createHistoryModels";
 import {Options} from "./tasks/model/options";
+import { GenerateHistoryOptions } from "./tasks/model/GenerateHistoryOptions";
 
 
-export function createHistoryModels(options: Options): string [] {
-    return createHistoryModelsInternal(options);
+export function createHistoryModels(): string [] {
+    return createHistoryModelsInternal();
 }
 
 
-export function GenerateHistory(): Function {
+export function GenerateHistory(options: GenerateHistoryOptions): Function {
     return function() {
         var f;
     };

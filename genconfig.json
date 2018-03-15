@@ -1,0 +1,8 @@
+{
+    "check":
+        {
+            "folders":[
+                "./test/src/model"
+            ]
+        }
+}
