@@ -48,18 +48,11 @@ function createMetadatas(files: string[]) {
     var wasFiled = 0;
     let fileMet;
     for (var file of files) {
-        if (/\w+tmp.ts$/.exec(file)) {
-            break;
-        }
         fileMet = new FileMetadata();
         fileMet.classes = new Array<ClassMetadata>();
 
         var stringFile = fs.readFileSync(file, "utf-8");
-        let correctStringFile  = ViewModelTypeCorrecting(stringFile);
-        let tmpFileSource = file.split(".ts").join("tmp.ts");
-        fs.writeFileSync(tmpFileSource, correctStringFile , "utf-8");
-        var jsonStructure = parseStruct(correctStringFile, {}, tmpFileSource);
-        fs.unlinkSync(tmpFileSource);
+        var jsonStructure = parseStruct(stringFile, {}, file);
         jsonStructure.classes.forEach(cls => {
             let classMet = new ClassMetadata();
             classMet.name = cls.name;
@@ -169,31 +162,6 @@ function  createFiles(metadata: FileMetadata[]): string[] {
         }
     }
     return res;
-}
-function ViewModelTypeCorrecting(input: string) {
-    let firstViewModelTypeInArray = input.split("@ViewModelType");
-    let result = firstViewModelTypeInArray.map( str => {
-        let tmpStr =  str.trim();
-        let viewModelTypeDecoratorRegExp = /\(\s?{\s*?["']type["']\s?:\s?\w+/;
-        let matches = viewModelTypeDecoratorRegExp.exec(tmpStr);
-        if (matches) {
-            let need = matches[0];
-            let matchRegExp = /[A-Z]\w+/;
-            let innerMatches = matchRegExp.exec(need);
-            tmpStr = tmpStr.replace(innerMatches[0], `"${innerMatches[0]}"`);
-        }
-        let viewModelTypeDecoratorForTransformer = /["']function["']\s?:\s?\w+(\.)?(\w+)?/;
-        let secMatches = viewModelTypeDecoratorForTransformer.exec(tmpStr);
-        if (secMatches) {
-            let need = secMatches[0];
-            let matchRegExp = /:\s?\w+(\.)?(\w+)?/;
-            let innerMatches = matchRegExp.exec(need);
-            let variant = `: "${innerMatches[0].substring(1).trim()}"`;
-            tmpStr =  tmpStr.replace(innerMatches[0], variant);
-        }
-        return tmpStr;
-    }).join("@ViewModelType");
-    return result;
 }
 
 function getAllfiles(path: string, resultPathes: string[], checkingFolders: string[]) {
