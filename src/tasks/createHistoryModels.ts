@@ -10,7 +10,7 @@ import {render, renderString, configure} from "nunjucks";
 import * as path from "path";
 import * as fs from "fs";
 import { Config } from "./model/config";
-import { GenerateHistoryOptions } from "./model/GenerateHistoryOptions";
+import { GenerateHistoryOptions } from "./model/generateHistoryOptions";
 
 export function createHistoryModelsInternal(): string [] {
     let possibleFiles: string[] = [];
