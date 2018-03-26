@@ -9,10 +9,10 @@ This repository provides a grunt plugin for code generation view models by model
   npm install grunt-generate-history-model
   
 # Begin to use
-* Установить typeorm
+* Установить typeorm.
   npm install typeorm
   
-* Создайте gencofig.json в корневом катологе
+* Создайте gencofig.json в корневом катологе.
 ```json
 {
     "check":
@@ -23,8 +23,8 @@ This repository provides a grunt plugin for code generation view models by model
         }
 }
 ```
-Свойство "folders" показывает, для каких папок ,на этом уровне и ниже, нужны,возможно, модели для логирования
-* Установите декораты на нужные модели
+Свойство "folders" показывает, для каких папок ,на этом уровне и ниже, нужны,возможно, модели для логирования.
+* Установите декораты на нужные модели.
 ```typescripts
 import { InnerClass } from "./innerClass";
 import { GenerateHistory, IgnoredInHistory, HistoryIndex } from "grunt-generate-history-model";
@@ -51,7 +51,7 @@ export class Class {
     "generation": "generateHistory"
   }
   ```
-  где "generateHistory" - строка для запуска плагина
+  где "generateHistory" - строка для запуска плагина.
   
 * npm run generation
 
@@ -82,7 +82,7 @@ export class hClass {
 ```
 # Декораторы
 
-В этом плагине используются 3 декоратора: 1 для классов и 2 для свойств
+В этом плагине используются 3 декоратора: 1 для классов и 2 для свойств.
 
 ## Декораторы для классов
 ### GenerateHistory
@@ -110,13 +110,19 @@ export class hClass {
 
 ## Декораторы для свойств
 ### HistoryIndex
-Декоратор,который используется для создания декоратора Index у свойства в модели логирования
+Декоратор,который используется для создания декоратора Index у свойства в модели логирования.
 ```typescript
 @HistoryIndex()
 ```
 ### IgnoredInHistory
-Декоратор,который используется,что бы свойство не было перенесено в модель логирования
+Декоратор,который используется,что бы свойство не было перенесено в модель логирования.
 
 ```typescript
 @IgnoreViewModel()
 ```
+## Связь с  декораторами typeORM
+### Column 
+* Все поля с декораторм Column ,если не отмечены декоратором IgnoredInHistory, создаются и в модели логирования.
+* Если декоратор Column имеет свойство nullable,то это свойство переносится и в модель логирования.
+### Join Column
+* Если поле имеет составной тип и декоратор JoinColumn то создается поле с типом number и именем,которое описано в декораторе
