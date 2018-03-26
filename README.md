@@ -104,7 +104,6 @@ Main decorator for creating history model
 | historyPath | true         | path,where history class will create                  |
 +-------------+--------------+-------------------------------------------------------+
 ```
-You can create several views from one base model
 ```typescript
 @GenerateHistory({'historyPath':'./generated/models'})
 ```
