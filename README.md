@@ -9,10 +9,10 @@ This repository provides a grunt plugin for code generation view models by model
   npm install grunt-generate-history-model
   
 # Begin to use
-* Intall typeorm
+* Установить typeorm
   npm install typeorm
   
-* Create gencofig.json in root folder
+* Создайте gencofig.json в корневом катологе
 ```json
 {
     "check":
@@ -23,8 +23,8 @@ This repository provides a grunt plugin for code generation view models by model
         }
 }
 ```
-Property "folders" show what folders need to explore to find models,which need history models
-* Set decorators to model
+Свойство "folders" показывает, для каких папок ,на этом уровне и ниже, нужны,возможно, модели для логирования
+* Установите декораты на нужные модели
 ```typescripts
 import { InnerClass } from "./innerClass";
 import { GenerateHistory, IgnoredInHistory, HistoryIndex } from "grunt-generate-history-model";
@@ -45,17 +45,17 @@ export class Class {
     public ignoredProperty: any;
 }
 ```
-* In package.json add to "script" property init command:
+* В package.json добавьте инициализирующую команду в свойство "script":
 ```json
   "scripts": {
     "generation": "generateHistory"
   }
   ```
-  where "generateHistory" is string which launch plugin
+  где "generateHistory" - строка для запуска плагина
   
 * npm run generation
 
-* go to path, which define in GenerateView decorator and see something like this:
+* после завершения работы плагина по пути,указанному в декораторе GenerateHistory,появятся файлы с расширением ".ts" :
 
 history model
 ```typescript
@@ -80,13 +80,13 @@ export class hClass {
     public indexProperty: number;
 }
 ```
-# Attributes
+# Декораторы
 
-There are 3 decorators used in this plugin: 1 for classes and 2 for properties
+В этом плагине используются 3 декоратора: 1 для классов и 2 для свойств
 
-## Attributes for classes
+## Декораторы для классов
 ### GenerateHistory
-Main decorator for creating history model
+Основной декоратор для создания моделей логирования
 ```shell
 +-------------+--------------+-------------------------------------------------------+
 |                        @GenerateHistory                                            |
@@ -108,14 +108,14 @@ Main decorator for creating history model
 @GenerateHistory({'historyPath':'./generated/models'})
 ```
 
-## Attributes for properties
+## Декораторы для свойств
 ### HistoryIndex
-Decorator which is used to create index decorator for property
+Декоратор,который используется для создания декоратора Index у свойства в модели логирования
 ```typescript
 @HistoryIndex()
 ```
 ### IgnoredInHistory
-Decorator which is used to delete property from history model
+Декоратор,который используется,что бы свойство не было перенесено в модель логирования
 
 ```typescript
 @IgnoreViewModel()
