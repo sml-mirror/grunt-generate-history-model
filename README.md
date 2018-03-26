@@ -4,12 +4,13 @@
 
 This repository provides a grunt plugin for code generation view models by models description.
 
-# Installation 
+# Установка
 
   npm install grunt-generate-history-model
   
-# Begin to use
+# Как начать использовать
 * Установить typeorm.
+
   npm install typeorm
   
 * Создайте gencofig.json в корневом катологе.
