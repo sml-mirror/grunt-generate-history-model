@@ -120,7 +120,7 @@ export class hClass {
 Декоратор, который используется, что бы свойство не было перенесено в модель логирования.
 
 ```typescript
-@IgnoreViewModel()
+@IgnoredInHistory()
 ```
 ## Связь с  декораторами typeORM
 ### Column 
