@@ -24,7 +24,7 @@ This repository provides a grunt plugin for code generation history models by mo
         }
 }
 ```
-Свойство "folders" показывает для каких папок(и их внутренних папок) нужны модели отображений.
+Свойство "folders" показывает для каких папок(и их внутренних папок) нужны модели логирования.
 * Установите декораты на нужные модели.
 ```typescripts
 import { InnerClass } from "./innerClass";
@@ -111,7 +111,7 @@ export class hClass {
 
 ## Декораторы для свойств
 ### HistoryIndex
-Декоратор, который используется для создания декоратора Index у свойства в модели логирования.
+Декоратор, который используется для создания декоратора Index из библиотеки typeorm у свойства в модели логирования.
 
 ```typescript
 @HistoryIndex()
