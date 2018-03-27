@@ -13,7 +13,7 @@ This repository provides a grunt plugin for code generation history models by mo
 
   npm install typeorm
   
-* Создайте gencofig.json в корневом катологе.
+* Создайте gencofig.json в корневом каталоге.
 ```json
 {
     "check":
