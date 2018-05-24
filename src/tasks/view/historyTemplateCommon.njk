@@ -3,7 +3,7 @@ import {Entity, Column, PrimaryColumn, ColumnOptions, Index, PrimaryGeneratedCol
 import 'reflect-metadata';
 {% for class in metafile.classes %}
 
-@Entity('h_{{class.name.toLowerCase()}}')
+@Entity('{{class.entityName}}')
 export class h{{class.name}} {
     @PrimaryGeneratedColumn()
     public __id?: number;

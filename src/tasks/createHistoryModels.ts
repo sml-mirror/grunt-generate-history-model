@@ -56,6 +56,14 @@ function createMetadatas(files: string[]) {
         jsonStructure.classes.forEach(cls => {
             let classMet = new ClassMetadata();
             classMet.name = cls.name;
+            let temp = cls.name.split("").map(symb => {
+                if (symb.toUpperCase() === symb) {
+                    symb = `_${symb.toLowerCase()}`;
+                }
+                return symb;
+            });
+            classMet.entityName = "h" + temp.join("");
+            const reg = cls.name.match(/[A-Z]/g);
             classMet.fields = new Array<FieldMetadata>();
             cls.decorators.forEach(dec => {
                 if (dec.name === "GenerateHistory") {
