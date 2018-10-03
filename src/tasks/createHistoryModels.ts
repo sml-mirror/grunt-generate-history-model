@@ -107,6 +107,9 @@ function createMetadatas(files: string[]) {
                                 if (typeof(arg) === "string" && dec.arguments[0] === arg) {
                                     fldMetadata.typeInDecorator = dec.arguments[0].toString();
                                 }
+                                if (arg && arg["type"]) {
+                                    fldMetadata.typeInDecorator = arg["type"];
+                                }
                                 if (arg["nullable"] && arg["nullable"] === true) {
                                     fldMetadata.nullable = true;
                                 }
