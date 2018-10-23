@@ -15,5 +15,7 @@ export class Hero {
     public detailId?: number;
     @Column({"type": "integer", "array": true, "nullable": true})
     public simpleArray: number[];
+    @Column({"type": "text", "array": true, "nullable": true})
+    public simpleStringArray: string[];
     public columnWithoutDatabase: string;
 }

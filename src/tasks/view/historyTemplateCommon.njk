@@ -23,10 +23,10 @@ export class h{{class.name}} {
 {% if field.type==="number[]"%}
     @Column('int', { 'array': true {% if (field.type and field.nullable ===true) %}, 'nullable': true{% endif %} })
 {% elif field.type==="string[]"%}
-@Column("simple-array")
+    @Column('text', { 'array': true {% if (field.type and field.nullable ===true) %}, 'nullable': true{% endif %} })
 {%endif%}
 {%else%}
-   @Column({%if (field.typeInDecorator) %}'{{field.typeInDecorator}}'{%else%} {%if field.type==="number"%}'integer' {%else%}'text'{%endif%}{%endif%}
+    @Column({%if (field.typeInDecorator) %}'{{field.typeInDecorator}}'{%else%} {%if field.type==="number"%}'integer' {%else%}'text'{%endif%}{%endif%}
 {% if (field.type and field.nullable ===true) %}, {'nullable': true}{% endif %})
 {%endif%}
 {% if field.generateIndex %}

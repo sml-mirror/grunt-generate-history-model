@@ -15,16 +15,18 @@ export class hHero {
     @Column('timestamp with time zone')
     @Index('ind_hHero_changed_date')
     public __changedate: Date;
-   @Column( 'integer' )
+    @Column( 'integer' )
     public id: number;
-   @Column('text')
+    @Column('text')
     public name: string;
-   @Column('text')
+    @Column('text')
     @Index('index_data_test')
     public data: string;
-   @Column( 'integer' )
+    @Column( 'integer' )
     @Index('ind_hHero_detailId')
     public detailId: number;
     @Column('int', { 'array': true , 'nullable': true })
     public simpleArray: number[];
+    @Column('text', { 'array': true , 'nullable': true })
+    public simpleStringArray: string[];
 }
