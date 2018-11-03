@@ -186,7 +186,7 @@ function getAllfiles(path: string, resultPathes: string[], checkingFolders: stri
             } else {
                 let tsRegExp = /.+\.ts$/;
                 let matches = tsRegExp.exec(pth);
-                if ( matches && matches.length > 0) {
+                if ( matches && matches.length > 0 && resultPathes.indexOf(matches[0]) === -1) {
                     resultPathes.push( matches[0]);
                 }
             }
