@@ -1,5 +1,6 @@
 /*Codegen*/
 // tslint:disable
+/* eslint-disable */
 
 import {Entity, Column, PrimaryColumn, ColumnOptions, Index, PrimaryGeneratedColumn} from 'typeorm';
 import 'reflect-metadata';
