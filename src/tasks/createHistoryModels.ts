@@ -1,16 +1,19 @@
+import {parseStruct, ImportNode} from "ts-file-parser";
+import {ArrayType, BasicType} from "ts-file-parser";
+import {render, configure} from "nunjucks";
+import * as path from "path";
+import * as fs from "fs";
 
 import {Options, FileMapping} from "./model/options";
 import {ClassMetadata} from "./model/classmetadata";
+import {Import} from "./model/import";
 import {FieldMetadata} from "./model/fieldmetadata";
 import {FileMetadata} from "./model/filemetadata";
-import {IExtensionGruntFilesConfig} from "./model/extensionFileConfig";
-import {parseStruct} from "ts-file-parser";
-import {ArrayType, BasicType} from "ts-file-parser";
-import {render, renderString, configure} from "nunjucks";
-import * as path from "path";
-import * as fs from "fs";
 import { Config } from "./model/config";
 import { GenerateHistoryOptions } from "./model/generateHistoryOptions";
+
+const mkdirp = require("mkdirp");
+const getDirName = path.dirname;
 
 export function createHistoryModelsInternal(): string [] {
     let possibleFiles: string[] = [];
@@ -24,33 +27,22 @@ export function createOptionsOfGrunt(obj: IGrunt): Options {
      var options = new Options();
      var files = new Array<FileMapping>();
      for (var i = 0; i <  obj.task.current.files.length; i++) {
-         var file = new FileMapping();
-         if ( obj.task.current.files[i].src.length === 1) {
-             file.source =  obj.task.current.files[i].src[0];
-         } else {
-            file.source =  obj.task.current.files[i].src[0];
-         }
+         const file = new FileMapping();
+         file.source =  obj.task.current.files[i].src[0];
          file.destination =  obj.task.current.files[i].dest;
          files.push(file);
      }
     options.files = files;
-    if ( obj.task.current.data.oneFile &&  obj.task.current.files.length) {
-        var fileConfig = obj.task.current.files[0] as IExtensionGruntFilesConfig;
-     }
-
      return options;
  }
 
 function createMetadatas(files: string[]) {
-    var fs = require("fs");
     let generationFiles: FileMetadata[];
     generationFiles = new Array<FileMetadata>();
-    var wasFiled = 0;
-    let fileMet;
+    let fileMet: FileMetadata;
     for (var file of files) {
         fileMet = new FileMetadata();
         fileMet.classes = new Array<ClassMetadata>();
-
         var stringFile = fs.readFileSync(file, "utf-8");
         var jsonStructure = parseStruct(stringFile, {}, file);
         jsonStructure.classes.forEach(cls => {
@@ -63,7 +55,6 @@ function createMetadatas(files: string[]) {
                 return symb;
             });
             classMet.entityName = "h" + temp.join("");
-            const reg = cls.name.match(/[A-Z]/g);
             classMet.fields = new Array<FieldMetadata>();
             cls.decorators.forEach(dec => {
                 if (dec.name === "GenerateHistory") {
@@ -79,21 +70,20 @@ function createMetadatas(files: string[]) {
                 let fldMetadata = new FieldMetadata();
                 if ((<ArrayType>fld.type).base !== undefined) {
                     fldMetadata.name = fld.name;
-                    var skobes = "[]";
+                    let skobes = "[]";
                     fldMetadata.isArray = true;
                     fldMetadata.type = (<BasicType>(<ArrayType>fld.type).base).typeName;
                     var curBase = (<ArrayType>fld.type).base;
                     while ((<ArrayType>curBase).base !== undefined) {
                         curBase = (<ArrayType>curBase).base;
                         fldMetadata.type = (<BasicType>curBase).typeName;
-                        skobes += "[]";
+                        skobes += skobes;
                     }
                     fldMetadata.type += skobes;
                 } else {
                     fldMetadata.name = fld.name;
                     fldMetadata.type = (<BasicType>fld.type).typeName;
                 }
-
                 let isDbColumn = false, isIgnoredInHistory = false;
                 fld.decorators.forEach(dec => {
                     if (dec.name === "IgnoredInHistory") {
@@ -125,7 +115,7 @@ function createMetadatas(files: string[]) {
                             fldMetadata.indexName = dec.arguments[0].toString();
                         }
                     }
-                    if (dec.name === "JoinColumn" && isIgnoredInHistory === false) {
+                    if (dec.name === "JoinColumn" && !isIgnoredInHistory) {
                         isDbColumn = true;
                         fldMetadata.name = `${fldMetadata.name}id`;
                         fldMetadata.type = "number";
@@ -151,9 +141,27 @@ function createMetadatas(files: string[]) {
               }
             fileMet.classes.push(classMet);
         });
+        fileMet.imports = addTypeImports(fileMet, jsonStructure._imports);
         generationFiles.push(fileMet);
     }
     return generationFiles;
+}
+function addTypeImports(file: FileMetadata, originImport: ImportNode[]) {
+    const typeImports: Import[] = [];
+    file.classes.forEach(fileClass => {
+        fileClass.fields.forEach( field => {
+            const importType = originImport.find(_import => _import.clauses.includes(field.type));
+            if (!!importType) {
+                const filePathWithoutFileName = file.filename.split("/");
+                filePathWithoutFileName.pop();
+                typeImports.push({
+                    name: field.type,
+                    path: path.relative(filePathWithoutFileName.join("/"), importType.absPathNode.join("/")).split("\\").join("/"),
+                });
+            }
+        });
+    });
+    return typeImports;
 }
 function  createFiles(metadata: FileMetadata[]): string[] {
     let viewsFolder = path.resolve(__dirname, "view/");
@@ -164,9 +172,6 @@ function  createFiles(metadata: FileMetadata[]): string[] {
         mdata.classes = mdata.classes.filter((item) => item.generateHistory);
         var c = render("historyTemplateCommon.njk", {metafile: mdata});
         if (c && c.trim()) {
-            var fs = require("fs");
-            var mkdirp = require("mkdirp");
-            var getDirName = require("path").dirname;
             mkdirp.sync(getDirName(metadata[i].filename));
             fs.writeFileSync(metadata[i].filename, c, "utf-8");
             res.push(c);

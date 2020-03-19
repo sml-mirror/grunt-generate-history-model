@@ -17,7 +17,7 @@
     "nunjucks": "^3.1.2",
     "path": "^0.12.7",
     "ts-file-parser": "0.0.12",
-    "typescript": "^2.7.2"
+    "typescript": "^3.8.3"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",

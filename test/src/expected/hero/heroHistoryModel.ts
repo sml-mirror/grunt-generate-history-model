@@ -4,6 +4,7 @@
 
 import {Entity, Column, PrimaryColumn, ColumnOptions, Index, PrimaryGeneratedColumn} from 'typeorm';
 import 'reflect-metadata';
+import { EnumType } from '../../../src/model/enum/enumType'
 
 @Entity('h_hero')
 export class hHero {
@@ -30,4 +31,6 @@ export class hHero {
     public simpleArray: number[];
     @Column('text', { 'array': true , 'nullable': true })
     public simpleStringArray: string[];
+    @Column('smallint')
+    public enuma: EnumType;
 }
