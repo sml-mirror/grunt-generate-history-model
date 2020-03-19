@@ -152,11 +152,17 @@ function addTypeImports(file: FileMetadata, originImport: ImportNode[]) {
         fileClass.fields.forEach( field => {
             const importType = originImport.find(_import => _import.clauses.includes(field.type));
             if (!!importType) {
-                const filePathWithoutFileName = file.filename.split("/");
+                const pathSeparator = "/";
+                const filePathWithoutFileName = file.filename.split(pathSeparator);
                 filePathWithoutFileName.pop();
+                const sourceFilePath = filePathWithoutFileName.join(pathSeparator);
+                const modulePath = importType.absPathNode.join(pathSeparator);
+                const pathtoModuleFromSourceFilePath = path.relative(sourceFilePath, modulePath)
+                    .split("\\")
+                    .join(pathSeparator);
                 typeImports.push({
                     name: field.type,
-                    path: path.relative(filePathWithoutFileName.join("/"), importType.absPathNode.join("/")).split("\\").join("/"),
+                    path: pathtoModuleFromSourceFilePath,
                 });
             }
         });
