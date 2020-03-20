@@ -1,5 +1,4 @@
-import {parseStruct, ImportNode} from "ts-file-parser";
-import {ArrayType, BasicType} from "ts-file-parser";
+import {parseStruct, ImportNode, ArrayType, BasicType} from "ts-file-parser";
 import {render, configure} from "nunjucks";
 import * as path from "path";
 import * as fs from "fs";
