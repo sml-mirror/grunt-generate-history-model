@@ -38,6 +38,6 @@ export class hHero {
     public enuma1: SecondEnumType;
     @Column('smallint')
     public enuma2: EnumType;
-    @Column('json')
+    @Column()
     public enuma3: EnumType;
 }
