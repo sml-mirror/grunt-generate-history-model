@@ -5,6 +5,9 @@
 
 import {Entity, Column, PrimaryColumn, ColumnOptions, Index, PrimaryGeneratedColumn} from 'typeorm';
 import 'reflect-metadata';
+{% for _import in metafile.imports%}
+import { {{_import.name}} } from '{{_import.path}}';
+{% endfor %}
 {% for class in metafile.classes %}
 
 @Entity('{{class.entityName}}')
@@ -27,7 +30,7 @@ export class h{{class.name}} {
     @Column('text', { 'array': true {% if (field.type and field.nullable ===true) %}, 'nullable': true{% endif %} })
 {%endif%}
 {%else%}
-    @Column({%if (field.typeInDecorator) %}'{{field.typeInDecorator}}'{%else%} {%if field.type==="number"%}'integer' {%else%}'text'{%endif%}{%endif%}
+    @Column({%if (field.typeInDecorator) %}'{{field.typeInDecorator}}'{%else%}{%if field.type==="number"%}'integer' {%elif field.type==="string"%}'text'{%endif%}{%endif%}
 {% if (field.type and field.nullable ===true) %}, {'nullable': true}{% endif %})
 {%endif%}
 {% if field.generateIndex %}

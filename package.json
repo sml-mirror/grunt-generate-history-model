@@ -17,13 +17,13 @@
     "nunjucks": "^3.1.2",
     "path": "^0.12.7",
     "ts-file-parser": "0.0.12",
-    "typescript": "^2.7.2"
+    "typescript": "^3.8.3"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
     "@types/grunt": "^0.4.22",
     "@types/mocha": "^2.2.48",
-    "@types/node": "^8.9.4",
+    "@types/node": "^13.9.2",
     "chai": "^4.1.1",
     "grunt": "^1.0.2",
     "grunt-cli": "^1.2.0",
