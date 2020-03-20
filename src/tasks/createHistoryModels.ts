@@ -153,10 +153,10 @@ function addTypeImports(file: FileMetadata, originImports: ImportNode[]) {
             const importType = originImports.find(_import => _import.clauses.includes(field.type));
             if (!!importType) {
                 const dirNameOfFile = path.dirname(file.filename);
-                const modulePath = importType.absPathNode.join('/');
+                const modulePath = importType.absPathNode.join("/");
                 const pathtoModuleFromSourceFilePath = path.relative(dirNameOfFile, modulePath)
                     .split("\\")
-                    .join('/');
+                    .join("/");
                 const alreadyExistInFileImports = typeImports.find(typeImport => typeImport.name === field.type);
                 if (!alreadyExistInFileImports) {
                     typeImports.push({

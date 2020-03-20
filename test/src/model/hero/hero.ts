@@ -21,9 +21,9 @@ export class Hero {
     public columnWithoutDatabase: string;
     @Column("smallint")
     public enuma: EnumType;
-    @Column('smallint')
+    @Column("smallint")
     public enuma1: SecondEnumType;
-    @Column('smallint')
+    @Column("smallint")
     public enuma2: EnumType;
     @Column()
     public enuma3: EnumType;
