@@ -158,10 +158,13 @@ function addTypeImports(file: FileMetadata, originImports: ImportNode[]) {
                 const pathtoModuleFromSourceFilePath = path.relative(dirNameOfFile, modulePath)
                     .split("\\")
                     .join('/');
-                typeImports.push({
-                    name: field.type,
-                    path: pathtoModuleFromSourceFilePath,
-                });
+                const alreadyExistInFileImports = typeImports.find(typeImport => typeImport.name === field.type);
+                if (!alreadyExistInFileImports) {
+                    typeImports.push({
+                        name: field.type,
+                        path: pathtoModuleFromSourceFilePath,
+                    });
+                }
             }
         });
     });
