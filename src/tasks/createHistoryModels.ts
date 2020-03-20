@@ -146,20 +146,18 @@ function createMetadatas(files: string[]) {
     }
     return generationFiles;
 }
-function addTypeImports(file: FileMetadata, originImport: ImportNode[]) {
+function addTypeImports(file: FileMetadata, originImports: ImportNode[]) {
     const typeImports: Import[] = [];
+
     file.classes.forEach(fileClass => {
         fileClass.fields.forEach( field => {
-            const importType = originImport.find(_import => _import.clauses.includes(field.type));
+            const importType = originImports.find(_import => _import.clauses.includes(field.type));
             if (!!importType) {
-                const pathSeparator = "/";
-                const filePathWithoutFileName = file.filename.split(pathSeparator);
-                filePathWithoutFileName.pop();
-                const sourceFilePath = filePathWithoutFileName.join(pathSeparator);
-                const modulePath = importType.absPathNode.join(pathSeparator);
-                const pathtoModuleFromSourceFilePath = path.relative(sourceFilePath, modulePath)
+                const dirNameOfFile = path.dirname(file.filename);
+                const modulePath = importType.absPathNode.join('/');
+                const pathtoModuleFromSourceFilePath = path.relative(dirNameOfFile, modulePath)
                     .split("\\")
-                    .join(pathSeparator);
+                    .join('/');
                 typeImports.push({
                     name: field.type,
                     path: pathtoModuleFromSourceFilePath,
@@ -167,8 +165,10 @@ function addTypeImports(file: FileMetadata, originImport: ImportNode[]) {
             }
         });
     });
+
     return typeImports;
 }
+
 function  createFiles(metadata: FileMetadata[]): string[] {
     let viewsFolder = path.resolve(__dirname, "view/");
     configure(viewsFolder, {autoescape: true, trimBlocks : true});
