@@ -4,6 +4,8 @@
   "description": "Grunt task for code generation history models by models description",
   "private": false,
   "main": "dist/src/index.js",
+  "types": "./index.d.ts",
+  "contributes": {},
   "bin": {
     "generateHistory": "./dist/src/bin.js"
   },
