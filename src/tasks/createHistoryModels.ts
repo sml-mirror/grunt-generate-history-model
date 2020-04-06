@@ -150,7 +150,8 @@ function addTypeImports(file: FileMetadata, originImports: ImportNode[]) {
 
     file.classes.forEach(fileClass => {
         fileClass.fields.forEach( field => {
-            const importType = originImports.find(_import => _import.clauses.includes(field.type));
+            const typeWithoutArray = field.type.replace(/\[\]/g, "");
+            const importType = originImports.find(_import => _import.clauses.includes(typeWithoutArray));
             if (!!importType) {
                 const dirNameOfFile = path.dirname(file.filename);
                 const modulePath = importType.absPathNode.join("/");
@@ -160,7 +161,7 @@ function addTypeImports(file: FileMetadata, originImports: ImportNode[]) {
                 const alreadyExistInFileImports = typeImports.find(typeImport => typeImport.name === field.type);
                 if (!alreadyExistInFileImports) {
                     typeImports.push({
-                        name: field.type,
+                        name: typeWithoutArray,
                         path: pathtoModuleFromSourceFilePath,
                     });
                 }
