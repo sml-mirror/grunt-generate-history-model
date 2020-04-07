@@ -6,6 +6,7 @@ import {Entity, Column, PrimaryColumn, ColumnOptions, Index, PrimaryGeneratedCol
 import 'reflect-metadata';
 import { EnumType } from '../../../src/model/enum/enumType';
 import { SecondEnumType } from '../../../src/model/enum/enumType';
+import { ThirdEnumType } from '../../../src/model/enum/otherEnumType';
 
 @Entity('h_hero')
 export class hHero {
@@ -36,8 +37,8 @@ export class hHero {
     public enuma: EnumType;
     @Column('smallint')
     public enuma1: SecondEnumType;
-    @Column('smallint')
-    public enuma2: EnumType;
+    @Column('smallint',{ 'array': true , 'nullable': true })
+    public enuma2: ThirdEnumType[];
     @Column()
     public enuma3: EnumType;
 }
