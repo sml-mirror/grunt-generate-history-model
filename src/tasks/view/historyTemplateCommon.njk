@@ -18,7 +18,7 @@ export class h{{class.name}} {
     @Column()
     public __operation: string;
 
-    @Column('timestamp with time zone')
+    @Column('{{timeType}}')
     @Index('ind_h{{class.name}}_changed_date')
     public __changedate: Date;
 {% for field in class.fields %}
