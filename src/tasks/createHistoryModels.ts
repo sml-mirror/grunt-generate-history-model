@@ -62,7 +62,7 @@ function createMetadatas(files: string[]) {
                     let options = dec.arguments[0].valueOf() as GenerateHistoryOptions;
                     const {name} = cls;
                     const {historyPath} = options;
-                    const filename = `${historyPath}/${name[0].toLowerCase()}${name.substring(1)}.ts`
+                    const filename = `${historyPath}/${name[0].toLowerCase()}${name.substring(1)}.ts`;
                     fileMet.filename = filename;
                     classMet.generateHistory = true;
                 });
