@@ -18,18 +18,19 @@ const getDirName = path.dirname;
 
 export function createHistoryModelsInternal(): string [] {
     let config = <Config>JSON.parse(fs.readFileSync(configFileName, "utf8"));
-    const possibleFiles = getAllfiles(".", [], config.check.folders);
+    const possibleFiles = getAllFiles(config.check.folders);
     const  metadata = createMetadatas(possibleFiles);
     const resultTemplate = createFiles(metadata, config.database);
     return resultTemplate;
  }
 export function createOptionsOfGrunt(obj: IGrunt): Options {
-     var options = new Options();
-     var files = new Array<FileMapping>();
-     for (var i = 0; i <  obj.task.current.files.length; i++) {
+     const options = new Options();
+     const files = [];
+     for (let i = 0; i <  obj.task.current.files.length; i++) {
          const file = new FileMapping();
-         file.source =  obj.task.current.files[i].src[0];
-         file.destination =  obj.task.current.files[i].dest;
+         const currentFile = obj.task.current.files[i];
+         file.source =  currentFile.src[0];
+         file.destination =  currentFile.dest;
          files.push(file);
      }
     options.files = files;
@@ -222,24 +223,24 @@ function  createFiles(metadata: FileMetadata[], database: string = "postgres"): 
     return res;
 }
 
-function getAllfiles(path: string, resultPathes: string[], checkingFolders: string[]) {
-    const tmpResult = [...resultPathes];
-    fs.readdirSync(path).forEach(f => {
-        let pth =  path + `/${f}`;
-        checkingFolders.forEach(_folder => {
-            if (fs.statSync(pth).isDirectory()) {
-                if ( (_folder.length >= pth.length && _folder.includes(pth)) || (pth.length >= _folder.length && pth.includes(_folder)) ) {
-                    tmpResult.push(...getAllfiles(pth , resultPathes, checkingFolders));
-                }
-            } else {
-                let tsRegExp = /.+\.ts$/;
-                let matches = tsRegExp.exec(pth);
-                if ( matches && matches.length > 0 && resultPathes.indexOf(matches[0]) === -1) {
-                    tmpResult.push( matches[0]);
-                }
+const getAllFiles = (folders: string[] = []) => {
+    const tsRegExp = /.+\.ts$/;
+    const returnFiles: string[] = [];
+
+    folders.forEach(folderPath => {
+        const files = fs.readdirSync(folderPath);
+        files.forEach(file => {
+            const endPath = `${folderPath}/${file}`;
+            const matches = tsRegExp.exec(endPath);
+            const isAnyMatches = matches && matches.length;
+            const isPathIdDirectory = fs.statSync(endPath).isDirectory();
+            if (isPathIdDirectory) {
+                const subFiles = getAllFiles([endPath]);
+                returnFiles.push(...subFiles);
+            } else if (isAnyMatches) {
+                returnFiles.push(matches[0]);
             }
         });
     });
-
-    return tmpResult;
-  }
+    return returnFiles;
+};
