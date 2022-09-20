@@ -1,4 +1,4 @@
-import {parseStruct, ImportNode, ArrayType, BasicType, ClassModel, FieldModel} from "ts-file-parser";
+import {parseStruct, ImportNode, ArrayType, BasicType, ClassModel, FieldModel, Module} from "ts-file-parser";
 import {render, configure} from "nunjucks";
 import * as path from "path";
 import * as fs from "fs";
@@ -18,8 +18,10 @@ const getDirName = path.dirname;
 
 export function createHistoryModelsInternal(): string [] {
     let config = <Config>JSON.parse(fs.readFileSync(configFileName, "utf8"));
-    const possibleFiles = getAllFiles(config.check.folders);
-    const  metadata = createMetadatas(possibleFiles);
+    const possibleFiles = getAllFiles(config.check.files || config.check.folders);
+    console.log('possibleFiles');
+    const metadata = createMetadatas(possibleFiles);
+    console.log('metadata');
     const resultTemplate = createFiles(metadata, config.database);
     return resultTemplate;
  }
@@ -136,7 +138,12 @@ const createFileMetadata = (file: string) => {
         const fileMet = new FileMetadata();
         fileMet.classes = [];
         let stringFile = fs.readFileSync(file, "utf-8");
-        let jsonStructure = parseStruct(stringFile, {}, file);
+        let jsonStructure: Module;
+        try {
+            jsonStructure = parseStruct(stringFile, {}, file);
+        } catch {
+            return null;
+        }
         jsonStructure.classes.forEach(cls => {
             let classMet = new ClassMetadata();
             classMet.name = cls.name;
@@ -169,7 +176,11 @@ function createMetadatas(files: string[]) {
     let generationFiles: FileMetadata[] = [];
     for (let file of files) {
         const fileMet = createFileMetadata(file);
-        generationFiles.push(fileMet);
+        if (fileMet) {
+            generationFiles.push(fileMet);
+        } else {
+            console.log(`FILE: ${file} - has no metadata - possible errors`)
+        }
     }
     return generationFiles;
 }
