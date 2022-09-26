@@ -177,7 +177,7 @@ function createMetadatas(files: string[]) {
         if (fileMet) {
             generationFiles.push(fileMet);
         } else {
-            console.log(`FILE: ${file} - has no metadata - possible errors`)
+            console.log(`FILE: ${file} - has no metadata - possible errors`);
         }
     }
     return generationFiles;
