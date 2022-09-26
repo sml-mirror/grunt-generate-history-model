@@ -18,10 +18,8 @@ const getDirName = path.dirname;
 
 export function createHistoryModelsInternal(): string [] {
     let config = <Config>JSON.parse(fs.readFileSync(configFileName, "utf8"));
-    const possibleFiles = getAllFiles(config.check.files || config.check.folders);
-    console.log('possibleFiles');
+    const possibleFiles = getAllFiles(config.check.folders);
     const metadata = createMetadatas(possibleFiles);
-    console.log('metadata');
     const resultTemplate = createFiles(metadata, config.database);
     return resultTemplate;
  }
